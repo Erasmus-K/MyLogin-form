@@ -1,4 +1,3 @@
-// src/components/Signup.jsx
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -13,17 +12,20 @@ function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Check if user already exists
-    const res = await axios.get(`${API}?username=${username}`);
-    if (res.data.length > 0) {
-      alert("Username already exists!");
-      return;
-    }
+    try {
+      const res = await axios.get(`${API}?username=${username}`);
+      if (res.data.length > 0) {
+        alert("Username already exists!");
+        return;
+      }
 
-    // Save new user
-    await axios.post(API, { username, password });
-    alert("Signup successful!");
-    navigate("/login"); // Redirect to login
+      await axios.post(API, { username, password });
+      alert("Signup successful!");
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong.");
+    }
   };
 
   return (
